@@ -1,81 +1,75 @@
-import React, { Component } from 'react';
-import Form from 'react-bootstrap/Form';
-import Button from 'react-bootstrap/Button';
-import Container from 'react-bootstrap/Container';
-import Row from 'react-bootstrap/Row';
-import Col from 'react-bootstrap/Col';
+import React, { Component } from 'react'
+
+import './styles/Form.css'
 
 export default class LoginForm extends Component {
-    constructor(props){
-        super(props);
-        this.state = {
-            username: '',
-            password: ''
-        };
+  constructor (props) {
+    super(props)
+    this.state = {
+      username: '',
+      password: ''
     }
+  }
 
-    add_user() {
-        fetch('/add-user', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                username: this.state.username,
-                password: this.state.password
-            })
-        }).then(res => res.text()).then(res => console.log(res));
-    }
-    on_submit(e) {
-        e.preventDefault();
-        fetch('/auth', {
-            method: 'POST',
-            headers: { 
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                username: this.state.username,
-                password: this.state.password
-            })
-        }).then(res => res.text()).then(res => console.log(res));
-    }
-    on_change_uname(e) {
-        this.setState({
-            username: e.target.value,
-            password: this.state.password
-        });
-    }
-    on_change_passwd(e) {
-        this.setState({
-            username: this.state.username,
-            password: e.target.value
-        });
-    }
+  addUser () {
+    fetch('/add-user', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        username: this.state.username,
+        password: this.state.password
+      })
+    }).then(res => res.text()).then(res => console.log(res))
+  }
+  onSubmit (e) {
+    e.preventDefault()
+    fetch('/auth', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        username: this.state.username,
+        password: this.state.password
+      })
+    }).then(res => res.text()).then(res => console.log(res))
+  }
+  onChangeUname (e) {
+    this.setState({
+      username: e.target.value,
+      password: this.state.password
+    })
+  }
+  onChangePasswd (e) {
+    this.setState({
+      username: this.state.username,
+      password: e.target.value
+    })
+  }
 
-    render() {
-        return (
-            <div className="LoginForm">
-                <Container>
-                <Form>
-                  <Form.Group controlId="formBasicEmail">
-                    <Form.Label>Email address</Form.Label>
-                    <Form.Control type="text" placeholder="Username" />
-                  </Form.Group>
+  render () {
+    return (
+      <div className="LoginForm">
+        <form onSubmit={ this.onSubmit.bind(this) }>
+          <label htmlFor="#uname">Username</label>
+          <input id="uname" type="text" placeholder="Username"
+            onChange={ this.onChangeUname.bind(this) }/>
 
-                  <Form.Group controlId="formBasicPassword">
-                    <Form.Label>Password</Form.Label>
-                    <Form.Control type="password" placeholder="Password" />
-                  </Form.Group>
+          <label htmlFor="#passwd">Password</label>
+          <input id="passwd" type="password" placeholder="Password"
+            onChange={ this.onChangePasswd.bind(this) }/>
 
-                  <Button variant="primary" type="submit">
-                    Submit
-                  </Button>
-                  <Button variant="secondary" type="button">
-                    Add User
-                  </Button>
-                </Form>
-                </Container>
-            </div>
-        );
-    }
+          <button id="login-btn" type="submit">
+            Log In
+          </button>
+
+          <button id="adduser-btn" onClick={ this.addUser.bind(this) } type="button">
+            Add User
+          </button>
+        </form>
+      </div>
+    )
+  }
 }
